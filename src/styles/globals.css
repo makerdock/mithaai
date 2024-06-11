@@ -3,11 +3,13 @@
 @tailwind utilities;
 
 
-:root, html, body {
+:root,
+html,
+body {
     /* background-color: white; */
-    background-color: #0040F6;    
-    font-family: 'Helvetica Neue', sans-serif;
-    background-image: url(/noise.png);
+    background-color: #2B0035;
+    font-family: 'Space Grotesk', sans-serif;
+    /* background-image: url(/noise.png); */
     background-attachment: fixed;
 }
 

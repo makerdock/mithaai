@@ -9,14 +9,14 @@ const Home: NextPage<{ transactions: Transaction[] }> = (props) => {
   return (
     <>
       <Head>
-        <title>$mithaai Dashboard</title>
-        <meta name="description" content="Checkout the $mithaai tippings" />
+        <title>$bren Dashboard</title>
+        <meta name="description" content="Checkout the $bren tippings" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="min-h-screen text-white rounded-2xl">
         {/* <img src="/save-banner.png" className="h-screen col-span-1 object-cover sticky top-0 left-0" alt="" /> */}
         <div className="md:p-24 p-8 max-w-6xl">
-          <h1 className="text-7xl pb-4 font-bold ">$mithaai Dashboard</h1>
+          <h1 className="text-7xl pb-4 font-bold ">$bren Dashboard</h1>
           <DownloadButton />
 
           {/* <table className="table-auto text-left w-full my-12">

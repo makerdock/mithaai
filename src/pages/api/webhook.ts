@@ -41,9 +41,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ message: 'You cannot tip yourself' });
     }
 
-    // grab the amount fo the tip from the message, format: $250 mithaai using regex, amount should have $250 followed by mithaai
+    // grab the amount fo the tip from the message, format: $250 bren using regex, amount should have $250 followed by bren
     let tipAmount = 0
-    const amountFromText = message.match(/\$?\s*(\d+)\s*\$?\s*mithaai/i);
+    const amountFromText = message.match(/\$?\s*(\d+)\s*\$?\s*bren\b/i);
 
     if (amountFromText?.[1]) {
         tipAmount = parseInt(amountFromText?.[1]
@@ -110,6 +110,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 const getUserAllowance = async (wallet: string): Promise<number> => {
-    const allowance: { rank: number, points: number } = await stack.getLeaderboardRank(wallet)
-    return allowance.points
+    // const allowance: { rank: number, points: number } = await stack.getLeaderboardRank(wallet)
+    // return allowance.points
+    return 10000
 }
