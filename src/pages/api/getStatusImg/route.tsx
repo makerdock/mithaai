@@ -31,7 +31,6 @@ export default async function GET(request: Request) {
             flexDirection: "column",
             alignItems: "flex-start",
             justifyContent: "center",
-            background: `url('https://i.ibb.co/B2LLpz8/FrameBg.png')`,
             height: "266px",
             width: "509px",
             backgroundColor: "black",

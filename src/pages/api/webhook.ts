@@ -182,8 +182,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // casting a reply to the user that the tip has been sent
-    const castMessage = `Hey ${body.data.author.username}!\nYou have successfully tipped ${tipAmount} $mithaai to ${data.toUsername}.\nAllowance left : ${allowanceLeft < 0 ? 0 : allowanceLeft} $mithaai`
-    await reply(body.data.hash, castMessage, encodeURIComponent("Tip Successfull"), "", encodeURIComponent(`You have successfully tipped ${tipAmount} $mithaai`))
+    const castMessage = `Hey ${body.data.author.username}!\nYou have successfully tipped ${tipAmount} $bren to ${data.toUsername}.\nAllowance left : ${allowanceLeft < 0 ? 0 : allowanceLeft} $bren`
+    await reply(body.data.hash, castMessage, encodeURIComponent("Tip Successfull"), "", encodeURIComponent(`You have successfully tipped ${tipAmount} $bren`))
 
     console.log('success');
 
