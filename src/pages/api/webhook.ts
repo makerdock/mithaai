@@ -192,7 +192,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // setting allowance points for a user if it's not set or user is tipping for first time or to reset allowance
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000';
     const endpoint = `/api/checkEligibility?isFollowingChannel=${isFollowingBren}&fid=${body.data.author.fid}&isSplitter=${isSplitter}&isAllies=${isAllies}`;
     const fullUrl = `${baseUrl}${endpoint}`;
     const setAllowance = await fetch(fullUrl)
