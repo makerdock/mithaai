@@ -37,11 +37,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             signer_uuid: process.env.SIGNER_UUID,
             text: castText,
             parent: parentHash,
-            // embeds: [
-            //     {
-            //         url: `${process.env.NEXT_PUBLIC_BASE_URL}/?tipStatus=${tipStatus}&msg=${msg}&main=${main}`
-            //     }
-            // ],
+            embeds: [
+                {
+                    url: `${process.env.NEXT_PUBLIC_BASE_URL}/?tipStatus=${tipStatus}&msg=${msg}&main=${main}`
+                }
+            ],
         }, { api_key: process.env.NEYNAR_API_KEY })
 
     }
@@ -312,7 +312,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         toFid: recipientFid,
         text: message,
         castHash: body.data.hash,
-        parentCastHash: body.data.parent_hash,
+        parentCastHash: body.data.parent_hash ? body.data.parent_hash : null,
         link: `https://warpcast.com/${body.data.author.username}/${body.data.hash}`,
     }
 

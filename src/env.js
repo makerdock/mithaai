@@ -20,6 +20,7 @@ export const env = createEnv({
     NEYNAR_API_KEY: z.string(),
     STACK_API_KEY: z.string(),
     STACK_POINT_SYSTEM_ID: z.string(),
+    DUNE_API_KEY: z.string()
     // DISCORD_CLIENT_ID: z.string(),
     // DISCORD_CLIENT_SECRET: z.string(),
   },
@@ -43,6 +44,7 @@ export const env = createEnv({
     NEYNAR_API_KEY: process.env.NEYNAR_API_KEY,
     STACK_API_KEY: process.env.STACK_API_KEY,
     STACK_POINT_SYSTEM_ID: process.env.STACK_POINT_SYSTEM_ID,
+    DUNE_API_KEY: process.env.DUNE_API_KEY
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
