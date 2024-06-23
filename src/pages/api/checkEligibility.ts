@@ -37,23 +37,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             isSplitter: boolean,
             isFollowingChannel: boolean
         ): number => {
-            let maxAllowancePoints = 0;
+            let maxAllowancePoints = 100;
 
-            if (isPowerBadgeHolder) {
-                maxAllowancePoints = 100;
-            }
+            // if (isPowerBadgeHolder) {
+            //     maxAllowancePoints = 100;
+            // }
 
-            if (isFollowingChannel) {
-                maxAllowancePoints = Math.max(maxAllowancePoints, 25);
-            }
+            // if (isFollowingChannel) {
+            //     maxAllowancePoints = Math.max(maxAllowancePoints, 25);
+            // }
 
-            if (isSplitter) {
-                maxAllowancePoints = Math.max(maxAllowancePoints, 300);
-            }
+            // if (isSplitter) {
+            //     maxAllowancePoints = Math.max(maxAllowancePoints, 300);
+            // }
 
-            if (isAllies) {
-                maxAllowancePoints = Math.max(maxAllowancePoints, 500);
-            }
+            // if (isAllies) {
+            //     maxAllowancePoints = Math.max(maxAllowancePoints, 500);
+            // }
 
             return maxAllowancePoints;
         };
