@@ -14,6 +14,21 @@ export interface GetUserByIdResponse {
     data: { users: User[] }
 }
 
+export interface Channel {
+    id: string;
+    url: string;
+    name: string;
+    description: string;
+    follower_count: number;
+    object: string;
+    image_url: string;
+    created_at: number;
+    parent_url: string;
+    lead: User;
+    hosts: User[];
+    moderator: User;
+  }
+
 export interface User {
     object: string
     fid: number

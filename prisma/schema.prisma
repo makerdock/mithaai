@@ -17,9 +17,15 @@ datasource db {
     directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-// model User {
-//     walletAddress String @id
-// }
+model User {
+    walletAddress String @id
+    fid           Int
+    display_name  String
+    username      String
+    pfp           String
+    isAllowanceGiven Boolean
+    allowanceGivenAt      DateTime @default(now())
+ }
 
 model Transaction {
     castHash       String   @id

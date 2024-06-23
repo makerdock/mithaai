@@ -1,9 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { NeynarWebhook } from '~/contracts/NeynarWebhook';
 import { db } from '~/server/db';
-import { getUserById } from '~/server/neynar';
+import { Channel, getUserById } from '~/server/neynar';
 import { stack } from '~/server/stack';
 const sdk = require('api')('@neynar/v2.0#281yklumre2o7');
+
 
 // add body-parser to parse the request body
 export const config = {
@@ -36,11 +37,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             signer_uuid: process.env.SIGNER_UUID,
             text: castText,
             parent: parentHash,
-            embeds: [
-                {
-                    url: `${process.env.NEXT_PUBLIC_BASE_URL}/?tipStatus=${tipStatus}&msg=${msg}&main=${main}`
-                }
-            ],
+            // embeds: [
+            //     {
+            //         url: `${process.env.NEXT_PUBLIC_BASE_URL}/?tipStatus=${tipStatus}&msg=${msg}&main=${main}`
+            //     }
+            // ],
         }, { api_key: process.env.NEYNAR_API_KEY })
 
     }
@@ -63,6 +64,138 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         else return false
 
     }
+
+    const checkIfFollowsBrenChannel = async () => {
+        const url = `https://api.neynar.com/v2/farcaster/user/channels?fid=${body.data.author.fid}&limit=25`;
+        const options = {
+            method: 'GET',
+            headers: { accept: 'application/json', api_key: process.env.NEYNAR_API_KEY! }
+        };
+
+        try {
+            const res = await fetch(url, options);
+            const data = await res.json();
+
+            console.log(data.channels);
+            const channels: Channel[] = data.channels;
+
+            const followsBrenChannel = channels.some(channel => channel.id === 'bren');
+            console.log('Follows bren channel:', followsBrenChannel);
+
+            return followsBrenChannel;
+        } catch (err) {
+            console.error('error:' + err);
+        }
+    };
+
+    const isFollowingBren = await checkIfFollowsBrenChannel()
+
+    // if the user is following bren channel
+    if (!isFollowingBren) {
+        console.error('User not following bren.');
+
+        // casting reply that tip amt is invalid
+        const castMessage = `Hey ${body.data.author.username}!\nPlease follow $bren to tip someone.`
+        const isReplyAlreadyExists = await checkBotReply()
+
+        if (!isReplyAlreadyExists) {
+            await reply(body.data.hash, castMessage, encodeURIComponent(""), encodeURIComponent("You are not following $bren!"), encodeURIComponent("Please Follow $Bren to tip ."))
+            console.log('cast created');
+        }
+
+        return res.status(400).json({ isFollowingBren, message: 'Follow Bren channel to tip' });
+    }
+
+
+    // checking if a user is a splitter or allies 
+    const checkUserType = async () => {
+        const response = await fetch(
+            `https://api.dune.com/api/v1/query/3840675/results?limit=1000&wallet_address=${body.data.author.verified_addresses.eth_addresses[0]}`,
+            {
+                headers: {
+                    "X-Dune-API-Key": process.env.DUNE_API_KEY!,
+                },
+            }
+        );
+        const data = await response.json();
+        console.log("Data:", data.result.rows);
+        const type = data.result.rows[0].type
+        return type
+    }
+
+    // getting user type - splitter or payItForward
+    const userType = await checkUserType()
+    const isSplitter = userType === 'splitter' ? true : false
+    const isAllies = userType === 'payItForward' ? true : false
+
+    // since only user with either power badge or being a splitter or being an allie(payItForward) 
+    if (!isAllies && !isSplitter && !body.data.author.power_badge) {
+        console.error('You are not eligible to tip');
+
+        // casting reply that tip amt is invalid
+        const castMessage = `Hey ${body.data.author.username}!\You are not eligible to tip $bren.`
+        const isReplyAlreadyExists = await checkBotReply()
+
+        if (!isReplyAlreadyExists) {
+            await reply(body.data.hash, castMessage, encodeURIComponent("Not Eligible"), encodeURIComponent("You are not eligible to tip!"), encodeURIComponent("Please be splitter/payItForward/powerBadgeHolder to tip ."))
+            console.log('cast created');
+        }
+
+        return res.status(400).json({ message: 'Not ELigible to tip' });
+    }
+
+
+    // checking if user exists in db
+    const checkUserExists = async (fid: number) => {
+        try {
+            const user = await db.user!.findUnique({
+                where: {
+                    fid: fid,
+                    walletAddress: body.data.author.verified_addresses.eth_addresses[0]
+                }
+            });
+
+            return !!user;
+        } catch (error) {
+            console.error('Error checking if user exists:', error);
+            return false;
+        }
+    };
+
+
+    // creating a new user if doesn't exists in db
+    const createNewUser = async () => {
+        try {
+            const newUser = await db.user.create({
+                data: {
+                    walletAddress: body.data.author.verified_addresses.eth_addresses[0]!,
+                    fid: body.data.author.fid,
+                    display_name: body.data.author.display_name,
+                    username: body.data.author.username,
+                    pfp: body.data.author.pfp_url,
+                    isAllowanceGiven: false,
+                },
+            });
+
+            console.log('New user created:', newUser);
+
+        } catch (err) {
+            console.log('Error creating new user', err);
+        }
+    }
+
+    const isUserExists = await checkUserExists(body.data.author.fid)
+
+    // calling func to create new user
+    if (!isUserExists) {
+        await createNewUser()
+    }
+
+    // setting allowance points for a user if it's not set or user is tipping for first time or to reset allowance
+    const setAllowance = await fetch(`/api/checkEligibility?isFollowingChannel=${isFollowingBren}&fid=${body.data.author.fid}&isSplitter=${isSplitter}&isAllies=${isAllies}`)
+
+    console.log(setAllowance);
+
 
     // returning message: bot is not allowed to tip if req is being sent by bot
     const botFid = 600098
@@ -131,8 +264,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const allowance = await getUserAllowance(primaryAddress);
-    const from = new Date().setHours(0, 0, 0, 0)
-    // get transactions from this day using prisma
+
+    const now = new Date();
+    const from = new Date(now.setDate(now.getDate() - 7)).setHours(0, 0, 0, 0);
+    // get transactions from this week using prisma
     const transactions = await db.transaction.findMany({
         where: {
             createdAt: {
@@ -190,13 +325,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await db.transaction.create({ data });
 
     // send a message to the user that the tip has been sent
-
     return res.status(200).json({ data, message: 'Received POST request' });
 
 }
 
 const getUserAllowance = async (wallet: string): Promise<number> => {
-    // const allowance: { rank: number, points: number } = await stack.getLeaderboardRank(wallet)
-    // return allowance.points
-    return 10000
+    const allowance: number = await stack.getPoints(wallet, { event: "allowance" });
+    return allowance
+    // return 10000
 }
