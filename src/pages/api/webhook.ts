@@ -58,7 +58,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const replies = conversation.data.conversation.cast.direct_replies
 
-        const botRepies = replies.filter((reply: any) => reply.author.username === "dipbot")
+        const botRepies = replies.filter((reply: any) => reply.author.username === "peekfeed")
 
         if (botRepies.length !== 0) return true
         else return false
