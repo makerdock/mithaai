@@ -184,8 +184,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
     }
 
-
-
     const isUserExists = await checkUserExists(body.data.author.fid)
 
     // calling func to create new user
