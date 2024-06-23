@@ -37,7 +37,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             isSplitter: boolean,
             isFollowingChannel: boolean
         ): number => {
-            let maxAllowancePoints = 100;
+            const maxAllowancePoints = 100;
 
             // if (isPowerBadgeHolder) {
             //     maxAllowancePoints = 100;
