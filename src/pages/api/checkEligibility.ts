@@ -16,20 +16,25 @@ export const config = {
     },
 };
 
+interface reqBody {
+    fid: number;
+    isAllies: boolean;
+    isSplitter: boolean;
+    isFollowingChannel: boolean;
+}
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
         if (req.method !== 'POST') {
             console.error('Method Not Allowed');
             return res.status(405).json({ message: 'Method Not Allowed' });
         }
-
-        const body = req.body;
+        const body = (req.body) as reqBody;
         const fid = body.fid;
-        const isFollowingChannel = Boolean(body.isFollowingChannel);
-        const isSplitter = Boolean(body.isSplitter);
-        const isAllies = Boolean(body.isAllies);
+        const isFollowingChannel = body.isFollowingChannel;
+        const isSplitter = body.isSplitter;
+        const isAllies = body.isAllies;
 
-        const senderDetails = await getUserById(fid, fid);
+        const senderDetails = await getUserById(fid.toString(), fid.toString());
 
         const calculateAllowancePoints = (
             isPowerBadgeHolder: boolean,
@@ -65,8 +70,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             isFollowingChannel
         );
 
-        console.log(allowancePoints);
-
         const user = await db.user.findUnique({
             where: {
                 fid: fid,
@@ -78,10 +81,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const oneWeekAgo = new Date(dateToday.getTime() - 7 * 24 * 60 * 60 * 1000);
 
         if (!user?.isAllowanceGiven || user?.allowanceGivenAt < oneWeekAgo) {
-            stack.track("allowance", {
+
+            await stack.track("allowance", {
                 account: senderDetails?.verified_addresses.eth_addresses[0]!,
                 points: allowancePoints
             });
+
+            console.log('allowance set successfully');
+            
 
             await db.user.update({
                 where: {
@@ -93,6 +100,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     allowanceGivenAt: dateToday
                 }
             });
+            console.log('db updated');
 
             return res.status(200).json({ allowancePoints, message: 'Allowance Reset Successfully' });
         }
