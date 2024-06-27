@@ -105,8 +105,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(200).json({ allowancePoints, message: 'Allowance Reset Successfully' });
         }
 
+        await db.user.update({
+            where: {
+                fid: fid,
+                walletAddress: senderDetails!.verified_addresses.eth_addresses[0]
+            },
+            data: {
+                isAllowanceGiven: false,
+                allowanceGivenAt: dateToday
+            }
+        });
 
-        return res.status(200).json({ message: 'There is time left to reset allowance' });
+
+        // return res.status(200).json({ message: 'There is time left to reset allowance' });
+        return res.status(200).json({ message: 'Increased allowance for youu' });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: 'Internal Server Error' });
