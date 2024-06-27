@@ -197,6 +197,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!isUserExists) {
         await createNewUser()
     }
+    console.log({
+            fid: body.data.author.fid,
+            isFollowingChannel: isFollowingBren,
+            isSplitter: isSplitter,
+            isAllies: isAllies
+        });
+    
 
     // setting allowance points for a user if it's not set or user is tipping for first time or to reset allowance
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000';
