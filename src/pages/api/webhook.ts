@@ -29,6 +29,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // grab the text from the message
     const message = body.data.text;
 
+    // returning message: bot is not allowed to tip if req is being sent by bot
+    const botFid = 600098
+    if (body.data.author.fid === botFid) {
+        console.error('Own Bot is not allowed to tip');
+        return res.status(400).json({ message: 'Own Bot is not allowed to tip' });
+    }
+
 
     // replying to casts
     const reply = async (parentHash: string, castText: string, tipStatus: string, msg: string, main: string) => {
@@ -198,7 +205,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const setAllowance = await fetch(fullUrl, {
         method: "POST",
         body: JSON.stringify({
-            fid: body.data.author.fid.toString(),
+            fid: body.data.author.fid,
             isFollowingChannel: isFollowingBren,
             isSplitter: isSplitter,
             isAllies: isAllies
@@ -208,12 +215,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log(setAllowance);
 
 
-    // returning message: bot is not allowed to tip if req is being sent by bot
-    const botFid = 600098
-    if (body.data.author.fid === botFid) {
-        console.error('Own Bot is not allowed to tip');
-        return res.status(400).json({ message: 'Own Bot is not allowed to tip' });
-    }
 
     // check for eth address
     const senderEthAddress = body.data.author.verified_addresses.eth_addresses[0];

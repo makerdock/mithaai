@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
         if (req.method !== 'POST') {
             console.error('Method Not Allowed');
-            return res.status(405).json({ message: 'Method Not Allowed' });
+            return res.status(405).json({ message: 'Method Not Allowed ' });
         }
         const body = (req.body) as reqBody;
         const fid = body.fid;
@@ -88,7 +88,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             });
 
             console.log('allowance set successfully');
-            
+
 
             await db.user.update({
                 where: {
@@ -104,6 +104,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             return res.status(200).json({ allowancePoints, message: 'Allowance Reset Successfully' });
         }
+
 
         return res.status(200).json({ message: 'There is time left to reset allowance' });
     } catch (err) {
