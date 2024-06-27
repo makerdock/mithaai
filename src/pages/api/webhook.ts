@@ -205,7 +205,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const setAllowance = await fetch(fullUrl, {
         method: "POST",
         body: JSON.stringify({
-            fid: body.data.author.fid.toString(),
+            fid: body.data.author.fid,
             isFollowingChannel: isFollowingBren,
             isSplitter: isSplitter,
             isAllies: isAllies
