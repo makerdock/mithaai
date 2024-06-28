@@ -29,17 +29,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(405).json({ message: 'Method Not Allowed ' });
         }
         console.log(req.body);
-        console.log("FID BODY",req.body.fid);
+        console.log("FID BODY", req.body.fid);
 
-        const body = req.body;
-        const fid = body.fid;
-        const isFollowingChannel = body.isFollowingChannel;
-        const isSplitter = body.isSplitter;
-        const isAllies = body.isAllies;
+        const { fid, isFollowingChannel, isSplitter, isAllies } = req.body;
 
-        console.log('Fid',fid);
-        console.log('Fid str',fid.toString());
-        
+        console.log("FID BODY", fid);
+        console.log('Fid str', fid.toString());
+
         const senderDetails = await getUserById(fid.toString(), fid.toString());
 
         const calculateAllowancePoints = (
