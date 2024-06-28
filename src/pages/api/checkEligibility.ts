@@ -17,10 +17,10 @@ export const config = {
 };
 
 interface reqBody {
-    fid: number;
-    isAllies: boolean;
-    isSplitter: boolean;
-    isFollowingChannel: boolean;
+    "fid": number;
+    "isAllies": boolean;
+    "isSplitter": boolean;
+    "isFollowingChannel": boolean;
 }
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
@@ -28,13 +28,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             console.error('Method Not Allowed');
             return res.status(405).json({ message: 'Method Not Allowed ' });
         }
-        console.log(req.body);
-        console.log("FID BODY", req.body.fid);
 
-        const { fid, isFollowingChannel, isSplitter, isAllies } = req.body;
+        const body = (req.body) as reqBody
+
+        console.log(req.body);
+        console.log("FID BODY", body["fid"]);
+
+        const isFollowingChannel = body["isFollowingChannel"]
+        const isAllies = body["isAllies"]
+        const isSplitter = body["isSplitter"]
+        const fid = body["fid"]
+
+        // const { fid, isFollowingChannel, isSplitter, isAllies } = req.body;
 
         console.log("FID BODY", fid);
         console.log('Fid str', fid.toString());
+        console.log('isFOllowing', isFollowingChannel);
+        console.log('isSPlitter', fid);
+        console.log('isALLiES', isAllies);
 
         const senderDetails = await getUserById(fid.toString(), fid.toString());
 
