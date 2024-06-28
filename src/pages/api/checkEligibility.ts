@@ -34,10 +34,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         console.log(body);
         console.log("FID BODY", body?.fid);
 
-        const isFollowingChannel = body["isFollowingChannel"]
-        const isAllies = body["isAllies"]
-        const isSplitter = body["isSplitter"]
-        const fid = body["fid"]
+        const isFollowingChannel = body.isFollowingChannel
+        const isAllies = body.isAllies
+        const isSplitter = body.isSplitter
+        const fid = body.fid
 
         // const { fid, isFollowingChannel, isSplitter, isAllies } = req.body;
 
