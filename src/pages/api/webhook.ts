@@ -4,7 +4,7 @@ import { db } from '~/server/db';
 import { Channel, getUserById } from '~/server/neynar';
 import { stack } from '~/server/stack';
 const sdk = require('api')('@neynar/v2.0#281yklumre2o7');
-
+import qs from "qs"
 
 // add body-parser to parse the request body
 export const config = {
@@ -195,25 +195,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         await createNewUser()
     }
     console.log({
-            fid: body.data.author.fid,
-            isFollowingChannel: isFollowingBren,
-            isSplitter: isSplitter,
-            isAllies: isAllies
-        } );
-    
+        fid: body.data.author.fid,
+        isFollowingChannel: isFollowingBren,
+        isSplitter: isSplitter,
+        isAllies: isAllies
+    });
+
 
     // setting allowance points for a user if it's not set or user is tipping for first time or to reset allowance
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000';
     const endpoint = `/api/checkEligibility`;
-    const fullUrl = `${baseUrl}${endpoint}`;
-    const setAllowance = await fetch(fullUrl, {
-        method: "POST",
-        body: JSON.stringify({
+    const query = qs.stringify(
+        {
             fid: body.data.author.fid,
             isFollowingChannel: isFollowingBren,
             isSplitter: isSplitter,
             isAllies: isAllies
-        })
+        }
+    )
+    const fullUrl = `${baseUrl}${endpoint}?query=${query}`;
+    const setAllowance = await fetch(fullUrl, {
+        method: "GET",
     })
 
     console.log(setAllowance);

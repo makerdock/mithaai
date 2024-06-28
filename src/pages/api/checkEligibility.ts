@@ -24,15 +24,15 @@ interface reqBody {
 }
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
-        if (req.method !== 'POST') {
+        if (req.method !== 'GET') {
             console.error('Method Not Allowed');
             return res.status(405).json({ message: 'Method Not Allowed ' });
         }
 
-        const body = (req.body) as reqBody
+        const body = req.query
 
-        console.log(req.body);
-        console.log("FID BODY", body["fid"]);
+        console.log(body);
+        console.log("FID BODY", body?.fid);
 
         const isFollowingChannel = body["isFollowingChannel"]
         const isAllies = body["isAllies"]
@@ -42,12 +42,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // const { fid, isFollowingChannel, isSplitter, isAllies } = req.body;
 
         console.log("FID BODY", fid);
-        console.log('Fid str', fid.toString());
         console.log('isFOllowing', isFollowingChannel);
         console.log('isSPlitter', fid);
         console.log('isALLiES', isAllies);
 
-        const senderDetails = await getUserById(fid.toString(), fid.toString());
+        console.log('Fid str', fid!.toString());
+
+        const senderDetails = await getUserById(fid!.toString(), fid!.toString());
 
         const calculateAllowancePoints = (
             isPowerBadgeHolder: boolean,
@@ -78,34 +79,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const allowancePoints = calculateAllowancePoints(
             senderDetails?.power_badge!,
-            isAllies,
-            isSplitter,
-            isFollowingChannel
+            Boolean(isAllies!),
+            Boolean(isSplitter!),
+            Boolean(isFollowingChannel!)
         );
 
         const user = await db.user.findUnique({
             where: {
-                fid: fid,
+                fid: Number(fid!),
                 walletAddress: senderDetails!.verified_addresses.eth_addresses[0]
             }
         });
-
+        
         const dateToday = new Date();
         const oneWeekAgo = new Date(dateToday.getTime() - 7 * 24 * 60 * 60 * 1000);
-
+        
         if (!user?.isAllowanceGiven || user?.allowanceGivenAt < oneWeekAgo) {
-
+            
             await stack.track("allowance", {
                 account: senderDetails?.verified_addresses.eth_addresses[0]!,
                 points: allowancePoints
             });
-
+            
             console.log('allowance set successfully');
-
-
+            
+            
             await db.user.update({
                 where: {
-                    fid: fid,
+                    fid: Number(fid!),
                     walletAddress: senderDetails!.verified_addresses.eth_addresses[0]
                 },
                 data: {
