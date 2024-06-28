@@ -83,11 +83,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const res = await fetch(url, options);
             const data = await res.json();
 
-            console.log(data.channels);
             const channels: Channel[] = data.channels;
 
             const followsBrenChannel = channels.some(channel => channel.id === 'bren');
-            console.log('Follows bren channel:', followsBrenChannel);
 
             return followsBrenChannel;
         } catch (err) {
@@ -125,7 +123,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
         );
         const data = await response.json();
-        console.log("Data:", data.result.rows);
         const type = data.result.rows[0].type
         return type
     }
@@ -202,7 +199,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             isFollowingChannel: isFollowingBren,
             isSplitter: isSplitter,
             isAllies: isAllies
-        });
+        } );
     
 
     // setting allowance points for a user if it's not set or user is tipping for first time or to reset allowance
