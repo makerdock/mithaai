@@ -29,15 +29,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(405).json({ message: 'Method Not Allowed ' });
         }
 
-        const body = req.query
+        const queryObj = req.query
 
-        console.log(body);
-        console.log("FID BODY", body?.fid);
+        console.log(queryObj);
+        console.log("FID BODY", queryObj?.fid);
 
-        const isFollowingChannel = body.isFollowingChannel
-        const isAllies = body.isAllies
-        const isSplitter = body.isSplitter
-        const fid = body.fid
+        const isFollowingChannel = queryObj.isFollowingChannel
+        const isAllies = queryObj.isAllies
+        const isSplitter = queryObj.isSplitter
+        const fid = queryObj.fid
 
         // const { fid, isFollowingChannel, isSplitter, isAllies } = req.body;
 
@@ -90,20 +90,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 walletAddress: senderDetails!.verified_addresses.eth_addresses[0]
             }
         });
-        
+
         const dateToday = new Date();
         const oneWeekAgo = new Date(dateToday.getTime() - 7 * 24 * 60 * 60 * 1000);
-        
+
         if (!user?.isAllowanceGiven || user?.allowanceGivenAt < oneWeekAgo) {
-            
+
             await stack.track("allowance", {
                 account: senderDetails?.verified_addresses.eth_addresses[0]!,
                 points: allowancePoints
             });
-            
+
             console.log('allowance set successfully');
-            
-            
+
+
             await db.user.update({
                 where: {
                     fid: Number(fid!),
