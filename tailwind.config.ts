@@ -9,6 +9,11 @@ export default {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
       colors: {
+        B: {
+          40: "#A09FA0",
+          60: "#707070",
+          100: "#111011",
+        },
         Y: {
           100: "#FFFC00",
         },
@@ -23,6 +28,9 @@ export default {
         },
         W: {
           100: "#EEE",
+        },
+        G: {
+          100: "#31AE7A",
         },
       },
     },

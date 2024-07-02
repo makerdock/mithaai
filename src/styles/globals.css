@@ -51,3 +51,13 @@ body {
   background-size: 95% 100%;
   z-index: 1;
 }
+
+.active-tab::after {
+  position: absolute;
+  content: "";
+  height: 4px;
+  bottom: 0;
+  width: 100%;
+  background-color: #fffc00;
+  left: 0;
+}

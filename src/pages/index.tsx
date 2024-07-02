@@ -6,9 +6,10 @@ import { db } from "~/server/db";
 import { useParams, useSearchParams } from "next/navigation";
 import Hero from "./_components/Hero";
 import SectionOne from "./_components/SectionOne";
+import SectionTwo from "./_components/SectionTwo";
+import SectionThree from "./_components/SectionThree";
 
 const Home: NextPage<{ transactions: Transaction[] }> = (props) => {
-  const transactions: Transaction[] = props.transactions;
   const queryParams = useSearchParams();
   const tipStatus = encodeURIComponent(queryParams.get("tipStatus")!);
   const statusMsg = encodeURIComponent(queryParams.get("msg")!);
@@ -35,6 +36,8 @@ const Home: NextPage<{ transactions: Transaction[] }> = (props) => {
       <section className="w-full">
         <Hero />
         <SectionOne />
+        <SectionTwo />
+        <SectionThree />
       </section>
     </>
   );
