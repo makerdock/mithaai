@@ -25,23 +25,23 @@ const SectionTwo = () => {
   ];
 
   return (
-    <section className="bg-G-100 px-10 py-20">
-      <h1 className="mb-1 text-center text-[40px] font-bold text-white">
+    <section className="bg-G-100 px-5 py-8 lg:px-10 lg:py-20">
+      <h1 className="mb-1 text-center text-xl font-bold text-white lg:text-[40px]">
         Top Ten Brens
       </h1>
-      <p className="mx-auto max-w-[600px] text-center text-2xl text-white">
+      <p className="mx-auto max-w-[600px] text-center text-xs text-white lg:text-2xl">
         Climb the ranks of Based recognition. The Bren <br />
         leaderboard showcases not only Bren recipients, <br />
         but also top performers in various categories.
       </p>
-      <div className="mx-auto mt-12 flex w-full max-w-[980px] items-center justify-between rounded-[14px] bg-[rgba(17,16,17,0.16)] px-5">
+      <div className="mx-auto mt-12 hidden w-full max-w-[980px] items-center justify-between rounded-[14px] bg-[rgba(17,16,17,0.16)] px-5 lg:flex">
         {tabs?.map((tab) => (
           <div
             key={tab?.title}
             className={cn(
               "relative cursor-pointer py-5 text-center text-xl text-white",
               {
-                "text-Y-100 active-tab": selectedTab?.title === tab?.title,
+                "active-tab text-Y-100": selectedTab?.title === tab?.title,
               },
             )}
             onClick={() => setSelectedTab(tab)}
@@ -50,25 +50,25 @@ const SectionTwo = () => {
           </div>
         ))}
       </div>
-      <div className="border-B-40 mx-auto mt-6 w-full max-w-[1024px] rounded-xl border bg-white">
-        <div className="text-B-100 border-B-40 grid w-full grid-cols-[60px_200px_1fr_284px] gap-20 border-b-[0.5px] px-8 py-5 text-xl font-bold">
+      <div className="mx-auto mt-6 w-full max-w-[1024px] rounded-xl border border-B-40 bg-white">
+        <div className="grid w-full grid-cols-[40px_60px_1fr_90px] gap-4 border-b-[0.5px] border-B-40 px-3 py-2.5 text-xs font-bold text-B-100 lg:grid-cols-[60px_200px_1fr_284px] lg:gap-20 lg:px-8 lg:py-5 lg:text-xl">
           <h1>Rank</h1>
           <h1 className="text-center">Profile</h1>
           <h1 className="">Name</h1>
           <h1 className="text-center">BREN Cred</h1>
         </div>
 
-        <div className="divide-B-40 divide-y-[0.5px]">
+        <div className="divide-y-[0.5px] divide-B-40">
           {contributorListing?.map((contributor) => (
             <div
-              className="grid w-full grid-cols-[60px_200px_1fr_284px] gap-20 px-8 py-5"
+              className="grid w-full grid-cols-[40px_60px_1fr_90px] gap-4 px-3 py-2.5 lg:grid-cols-[60px_200px_1fr_284px] lg:gap-20 lg:px-8 lg:py-5"
               key={contributor?.name}
             >
-              <h1 className="text-B-60 text-center text-lg">
+              <h1 className="text-center text-xs text-B-60 lg:text-lg">
                 {contributor?.rank}
               </h1>
               <div className="w-full">
-                <div className="relative mx-auto h-[22px] w-[22px]">
+                <div className="relative mx-auto h-[14px] w-[14px] lg:h-[22px] lg:w-[22px]">
                   <Image
                     layout="fill"
                     alt="Profile"
@@ -77,7 +77,7 @@ const SectionTwo = () => {
                 </div>
               </div>
               <div className="flex w-full items-center gap-2">
-                <div className="relative h-[22px] w-[22px]">
+                <div className="relative h-[14px] w-[14px] lg:h-[22px] lg:w-[22px]">
                   <Image
                     src="/icons/bolt_circle.svg"
                     alt="Bolt"
@@ -85,19 +85,21 @@ const SectionTwo = () => {
                   />
                 </div>
 
-                <p className="text-B-60 text-lg">{contributor?.name}</p>
+                <p className="text-xs text-B-60 lg:text-lg">
+                  {contributor?.name}
+                </p>
               </div>
 
-              <p className="text-B-60 text-center">255</p>
+              <p className="text-center text-xs text-B-60 lg:text-base">255</p>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="mt-12">
-        <button className="bg bg-B-100 mx-auto flex items-center gap-2 rounded-xl p-6">
-          <p className="text-xl text-white">View Leaderboard</p>
-          <div className="relative h-6 w-6">
+      <div className="mt-6 lg:mt-12">
+        <button className="bg mx-auto flex items-center gap-2 rounded-md bg-B-100 p-3 lg:rounded-xl lg:p-6">
+          <p className="text-xs text-white lg:text-xl">View Leaderboard</p>
+          <div className="relative h-3 w-3 lg:h-6 lg:w-6">
             <Image
               src="/icons/white_arrow_left.svg"
               alt="Arrow"

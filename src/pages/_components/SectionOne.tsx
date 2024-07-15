@@ -29,36 +29,44 @@ const SectionOne = () => {
     },
   ];
   return (
-    <div className="w-full px-[60px]">
-      <div className="relative mx-auto h-[300px] w-[1000px]">
+    <div className="w-full px-5 lg:px-[60px]">
+      <div className="relative mx-auto h-[120px] w-[300px] lg:h-[300px] lg:w-[1000px]">
         <Image src="/icons/logo_big_lg.svg" alt="Bren" layout="fill" />
       </div>
-      <div className="bg-blu-100 mx-auto w-full max-w-[1600px] rounded-[40px] px-[128px] py-[100px]">
-        <h1 className="mb-2 text-center text-[40px] font-bold text-white">
+      <div className="mx-auto w-full max-w-[1600px] rounded-lg bg-blu-100 px-6 py-10 lg:rounded-[40px] lg:px-[128px] lg:py-[100px]">
+        <h1 className="text-center text-xl font-bold text-white lg:mb-2 lg:text-[40px]">
           How Bren Works
         </h1>
-        <h2 className="text-W-100 mb-[60px] text-center text-[22px]">
+        <h2 className="mb-5 text-center text-xs text-W-100 lg:mb-[60px] lg:text-[22px]">
           Recognize and Reward Based Contributions
         </h2>
 
-        <div className="grid grid-cols-2 items-stretch gap-12">
+        <div className="grid items-stretch gap-12 lg:grid-cols-2">
           {rewardListing?.map((reward) => (
             <div
               key={reward?.title}
-              className="rounded-xl border border-[rgba(255,255,255,0.40)] bg-[rgba(255,255,255,0.08)] px-10 py-[72px]"
+              className="rounded-xl border border-[rgba(255,255,255,0.40)] bg-[rgba(255,255,255,0.08)] px-5 py-8 lg:px-10 lg:py-[72px]"
             >
-              <div className="relative h-[58px] w-[58px]">
+              <div className="relative hidden h-[58px] w-[58px] lg:block">
                 <Image alt={reward?.title} src={reward?.icon} layout="fill" />
               </div>
-              <p className="mt-6 text-[32px] font-bold text-white">
-                <span>{reward?.number}.</span> {reward?.title}
+              <p className="mb-2 text-[40px] font-bold text-[#FFFFFF66] lg:hidden">
+                {reward?.number}
               </p>
-              <p className="mt-1 text-[26px] text-white">{reward?.text}</p>
+              <p className="text-base font-bold leading-tight text-white lg:mt-6 lg:text-[32px]">
+                <span className="hidden lg:inline-block">
+                  {reward?.number}.
+                </span>{" "}
+                {reward?.title}
+              </p>
+              <p className="mt-1 text-xs leading-tight text-white lg:mt-3 lg:text-[26px]">
+                {reward?.text}
+              </p>
             </div>
           ))}
         </div>
       </div>
-      <div className="relative mx-auto h-[300px] w-[1000px]">
+      <div className="relative mx-auto h-[120px] w-[300px] lg:h-[300px] lg:w-[1000px]">
         <Image src="/icons/logo_big_lg.svg" alt="Bren" layout="fill" />
       </div>
     </div>

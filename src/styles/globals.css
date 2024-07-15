@@ -36,19 +36,10 @@ body {
   content: "";
   height: 100%;
   width: 100%;
-  background: url("/icons/globe.png");
-  background-size: 93% 95%;
+  right: 0;
+  background: url("/icons/globe-mini.svg");
+  background-size: cover;
   background-repeat: no-repeat;
-  z-index: 1;
-}
-
-.hero-champ::before {
-  position: absolute;
-  content: "";
-  width: 100%;
-  background: url("/icons/hero-two.png");
-  height: 500px;
-  background-size: 95% 100%;
   z-index: 1;
 }
 
@@ -60,4 +51,27 @@ body {
   width: 100%;
   background-color: #fffc00;
   left: 0;
+}
+
+@media (min-width: 1024px) {
+  .hero-globe::before {
+    position: absolute;
+    content: "";
+    height: 100%;
+    width: 100%;
+    background: url("/icons/globe.png");
+    background-size: 93% 95%;
+    background-repeat: no-repeat;
+    z-index: 1;
+  }
+
+  .hero-champ::before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    background: url("/icons/hero-two.png");
+    height: 500px;
+    background-size: 95% 100%;
+    z-index: 1;
+  }
 }

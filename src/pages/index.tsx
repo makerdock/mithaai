@@ -1,13 +1,12 @@
 import { Transaction } from "@prisma/client";
 import { NextPage } from "next";
 import Head from "next/head";
-import DownloadButton from "~/components/DownloadButton";
-import { db } from "~/server/db";
-import { useParams, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Hero from "./_components/Hero";
 import SectionOne from "./_components/SectionOne";
 import SectionTwo from "./_components/SectionTwo";
 import SectionThree from "./_components/SectionThree";
+import Footer from "./_components/Footer";
 
 const Home: NextPage<{ transactions: Transaction[] }> = (props) => {
   const queryParams = useSearchParams();
@@ -38,25 +37,10 @@ const Home: NextPage<{ transactions: Transaction[] }> = (props) => {
         <SectionOne />
         <SectionTwo />
         <SectionThree />
+        <Footer />
       </section>
     </>
   );
 };
 
 export default Home;
-
-// export const getServerSideProps: GetServerSideProps<{
-//   transactions: Transaction[];
-// }> = async () => {
-//   const response = await db.transaction.findMany({
-//     orderBy: {
-//       createdAt: "desc",
-//     },
-//   });
-
-//   return {
-//     props: {
-//       transactions: JSON.parse(JSON.stringify(response)) as Transaction[],
-//     },
-//   };
-// };
