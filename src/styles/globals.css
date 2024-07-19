@@ -43,6 +43,20 @@ body {
   z-index: 1;
 }
 
+.mobile-menu-globe::before {
+  position: absolute;
+  content: "";
+  height: 70%;
+  width: 90%;
+  background: url("/icons/globe_menu.svg");
+  background-size: 100% 100%;
+  left: 50%;
+  bottom: 0;
+  z-index: 1;
+  transform: translateX(-50%);
+  background-repeat: no-repeat;
+}
+
 .active-tab::after {
   position: absolute;
   content: "";

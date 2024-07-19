@@ -26,9 +26,8 @@ const Hero = () => {
     },
   ];
   return (
-    <div className="min-h-screen w-full bg-Y-100">
-      <Nav />
-      <section className="hero-globe relative mx-auto mt-10 w-full overflow-x-hidden px-5 lg:h-[850px] lg:max-w-[1600px] lg:px-[60px]">
+    <div className="min-h-screen w-full bg-Y-100 pt-[160px] lg:pt-[200px]">
+      <section className="hero-globe relative mx-auto  w-full overflow-x-hidden px-5 lg:h-[800px] lg:max-w-[1600px] lg:px-[60px]">
         <section className="relative z-[5] mx-auto flex h-[510px] w-full flex-col justify-center lg:h-[700px] lg:max-w-[1200px]">
           <h1 className="mb-2 stroke-pu-100 text-[32px] font-bold leading-tight text-pu-100 lg:mb-4 lg:text-[60px]">
             Recognize <br className="lg:hidden" />

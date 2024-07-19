@@ -37,7 +37,6 @@ const Home: NextPage<{ transactions: Transaction[] }> = (props) => {
         <SectionOne />
         <SectionTwo />
         <SectionThree />
-        <Footer />
       </section>
     </>
   );
