@@ -18,7 +18,7 @@ export interface Data {
     embeds: Embed[]
     reactions: Reactions
     replies: Replies
-    mentioned_profiles: string[]
+    mentioned_profiles: MentionedProfile[]
 }
 
 export interface ParentAuthor {
@@ -66,4 +66,19 @@ export interface Reactions {
 
 export interface Replies {
     count: number
+}
+
+export interface MentionedProfile {
+    object: string
+    fid: number
+    custody_address: string
+    username: string
+    display_name: string
+    pfp_url: string
+    profile: {
+        bio: {
+            text: string;
+            mentioned_profiles: MentionedProfile[];
+        };
+    };
 }
